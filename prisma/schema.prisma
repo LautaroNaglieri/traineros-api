@@ -1,0 +1,103 @@
+// Esquema base de Prisma — TrainerOS (MVP Fase 1).
+// Solo configuración de datasource y generator + entidades núcleo del modelo
+// relacional. La lógica de negocio y los servicios se implementan en fases
+// posteriores; el aislamiento multitenant se hace inyectando `trainerId` en
+// cada consulta (validado desde el JWT).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Entrenador = tenant del sistema. Toda la data cuelga de él.
+model Trainer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  students    Student[]
+  routines    Routine[]
+  memberships Membership[]
+}
+
+/// Alumno asociado a un entrenador (tenant).
+model Student {
+  id        String   @id @default(cuid())
+  trainerId String
+  email     String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trainer     Trainer      @relation(fields: [trainerId], references: [id])
+  memberships Membership[]
+  routines    Routine[]
+
+  @@unique([trainerId, email])
+  @@index([trainerId])
+}
+
+/// Ejercicio del catálogo global (mayormente lecturas, compartido entre tenants).
+model Exercise {
+  id          String   @id @default(cuid())
+  name        String
+  muscleGroup String
+  videoUrl    String?
+  createdAt   DateTime @default(now())
+
+  routineExercises RoutineExercise[]
+}
+
+/// Rutina creada por un entrenador y asignada a un alumno.
+model Routine {
+  id        String   @id @default(cuid())
+  trainerId String
+  studentId String?
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trainer   Trainer           @relation(fields: [trainerId], references: [id])
+  student   Student?          @relation(fields: [studentId], references: [id])
+  exercises RoutineExercise[]
+
+  @@index([trainerId])
+}
+
+/// Tabla puente Rutina–Ejercicio (con series/reps).
+model RoutineExercise {
+  id         String @id @default(cuid())
+  routineId  String
+  exerciseId String
+  sets       Int
+  reps       Int
+  position   Int
+
+  routine  Routine  @relation(fields: [routineId], references: [id])
+  exercise Exercise @relation(fields: [exerciseId], references: [id])
+
+  @@unique([routineId, exerciseId])
+}
+
+/// Membresía del alumno con su fecha de vencimiento (control de pagos).
+model Membership {
+  id        String   @id @default(cuid())
+  trainerId String
+  studentId String
+  status    String   @default("active")
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trainer Trainer @relation(fields: [trainerId], references: [id])
+  student Student @relation(fields: [studentId], references: [id])
+
+  @@index([trainerId])
+  @@index([expiresAt])
+}
