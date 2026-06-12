@@ -1,4 +1,5 @@
 import express, { type Application } from 'express';
+import { healthRouter } from './routes/health.routes.js';
 
 /**
  * Construye la aplicación Express (monolito modular).
@@ -13,6 +14,9 @@ export function createApp(): Application {
   // Middlewares base
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Healthcheck (LB / probes de Kubernetes)
+  app.use(healthRouter);
 
   // TODO(fase-1): montar routers de módulos
   //   app.use('/api/auth', authRouter);
