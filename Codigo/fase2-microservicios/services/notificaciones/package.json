@@ -1,0 +1,7 @@
+{
+  "name": "@traineros/notificaciones-service",
+  "version": "0.1.0",
+  "description": "MS Notificaciones - suscribe eventos",
+  "main": "src/index.ts",
+  "scripts": { "dev": "ts-node-dev --respawn src/index.ts" }
+}

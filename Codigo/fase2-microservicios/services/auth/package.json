@@ -1,0 +1,7 @@
+{
+  "name": "@traineros/auth-service",
+  "version": "0.1.0",
+  "description": "MS Auth & Tenants - identidad, JWT, multitenant",
+  "main": "src/index.ts",
+  "scripts": { "dev": "ts-node-dev --respawn src/index.ts" }
+}

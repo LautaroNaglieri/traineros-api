@@ -1,0 +1,9 @@
+{
+  "name": "traineros-microservicios",
+  "private": true,
+  "workspaces": [
+    "gateway",
+    "services/*",
+    "shared-contracts"
+  ]
+}

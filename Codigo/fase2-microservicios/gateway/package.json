@@ -1,0 +1,6 @@
+{
+  "name": "@traineros/gateway",
+  "version": "0.1.0",
+  "description": "API Gateway - ruteo, rate limiting y validacion JWT centralizada",
+  "scripts": { "dev": "ts-node-dev --respawn src/index.ts" }
+}

@@ -1,0 +1,53 @@
+# Esqueleto de orquestación local: servicios + bases por servicio + emulador Pub/Sub.
+services:
+  gateway:
+    build: ./gateway
+    ports: ["8080:8080"]
+    depends_on: [auth, rutinas, catalogo, pagos]
+
+  auth:
+    build: ./services/auth
+    environment: [DATABASE_URL=postgresql://app:app@auth-db:5432/auth]
+    depends_on: [auth-db]
+  auth-db:
+    image: postgres:16-alpine
+    environment: [POSTGRES_USER=app, POSTGRES_PASSWORD=app, POSTGRES_DB=auth]
+
+  rutinas:
+    build: ./services/rutinas
+    environment:
+      - DATABASE_URL=postgresql://app:app@rutinas-db:5432/rutinas
+      - PUBSUB_EMULATOR_HOST=pubsub:8085
+    depends_on: [rutinas-db, pubsub]
+  rutinas-db:
+    image: postgres:16-alpine
+    environment: [POSTGRES_USER=app, POSTGRES_PASSWORD=app, POSTGRES_DB=rutinas]
+
+  catalogo:
+    build: ./services/catalogo
+    environment: [DATABASE_URL=postgresql://app:app@catalogo-db:5432/catalogo]
+    depends_on: [catalogo-db]
+  catalogo-db:
+    image: postgres:16-alpine
+    environment: [POSTGRES_USER=app, POSTGRES_PASSWORD=app, POSTGRES_DB=catalogo]
+
+  pagos:
+    build: ./services/pagos
+    environment:
+      - DATABASE_URL=postgresql://app:app@pagos-db:5432/pagos
+      - PUBSUB_EMULATOR_HOST=pubsub:8085
+    depends_on: [pagos-db, pubsub]
+  pagos-db:
+    image: postgres:16-alpine
+    environment: [POSTGRES_USER=app, POSTGRES_PASSWORD=app, POSTGRES_DB=pagos]
+
+  notificaciones:
+    build: ./services/notificaciones
+    environment: [PUBSUB_EMULATOR_HOST=pubsub:8085]
+    depends_on: [pubsub]
+
+  # Emulador de Google Pub/Sub para desarrollo local
+  pubsub:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:emulators
+    command: gcloud beta emulators pubsub start --host-port=0.0.0.0:8085
+    ports: ["8085:8085"]
