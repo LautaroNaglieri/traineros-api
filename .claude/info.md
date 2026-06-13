@@ -90,9 +90,15 @@ Repo `LautaroNaglieri/traineros-api`, rama `main`. Estado real:
 - Commits de esqueleto previos (express, prisma, eslint, healthcheck) se conservan en la historia.
 - Config commit: user "Conrado Gómez" <conradogomez556@gmail.com>.
 
-### Diagramas: estilo draw.io (13/06)
-- Se rehicieron los 4 diagramas en **estilo draw.io/formal** (paleta oficial de draw.io,
-  íconos de servicios, conectores ortogonales, clusters). Generador: `build_diagrams.py`.
+### Diagramas: ahora son .drawio REALES (13/06)
+- Los 4 diagramas son **archivos `.drawio` nativos** (mxGraph), editables en draw.io /
+  diagrams.net, en `Presentacion/diagramas/drawio/`. Se renderizan a PNG con el **draw.io
+  desktop** (instalado en `C:\Program Files\draw.io\draw.io.exe`).
+- Generador: `Presentacion/generador/build_drawio.py` → produce los .drawio.
+  Render: `render_drawio.sh` (o el comando del README del generador). Pipeline en
+  `Presentacion/generador/README.md`. (Se eliminó el generador PIL `build_diagrams.py`.)
+- Motivo: las versiones anteriores (PIL) "se veían hechas por código"; ahora es draw.io
+  de verdad renderizando los diagramas.
 
 ### PENDIENTE (próximas sesiones)
 - [x] Revisar el repo GitHub (diagnóstico arriba).
