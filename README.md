@@ -1,92 +1,39 @@
-# TrainerOS — API (Monolito Modular · MVP)
+# TrainerOS — Trabajo Final Integrador (Desarrollo de Aplicaciones Web)
 
-Plataforma **SaaS B2B2C** de gestión para entrenadores personales independientes.
-Este repositorio contiene el **backend** del MVP: una API REST construida como
-**monolito modular en 3 capas** (Fase 1 del Trabajo Final Integrador).
+Workspace del TFI del equipo **MMP-SOFTWARE** (6 integrantes): diseño de la evolución
+arquitectónica de **TrainerOS**, una plataforma SaaS B2B2C de gestión para entrenadores
+personales.
 
-> Trabajo Final Integrador — _Desarrollo de Aplicaciones Web_ · MMP-SOFTWARE · 2026
-> Equipo de 8 integrantes.
+> "Del Código a la Arquitectura: El Criterio del Desarrollador"
 
----
+El objetivo del trabajo es ejercitar el criterio de **diseñador de software**: cada
+decisión arquitectónica está justificada por negocio, costo y rendimiento.
 
-## Problema y modelo de negocio
+## Organización del repositorio
 
-Hoy los entrenadores gestionan decenas de alumnos con planillas de Excel y mensajes
-de WhatsApp: caos logístico, rutinas desactualizadas y pérdida de control sobre los
-cobros de membresías.
+| Carpeta | Contenido |
+|---------|-----------|
+| [`Material/`](./Material) | Documentación fuente: consigna, documento maestro del proyecto y resumen. |
+| [`Presentacion/`](./Presentacion) | Presentación ejecutiva (`.pptx`) y diagramas de arquitectura de las Fases 1 y 2. |
+| [`Codigo/`](./Codigo) | Esqueletos de código (diseño): monolito modular **en capas** (Fase 1) y microservicios (Fase 2). |
+| [`Informe/`](./Informe) | Informe final (PDF) — en preparación. |
+| [`Articulo/`](./Articulo) | Artículo técnico de divulgación — en preparación. |
+| `.claude/info.md` | Bitácora del proyecto (qué se hizo, cuándo y qué falta). |
 
-**TrainerOS** lo resuelve con un modelo de **suscripción mensual por entrenador**
-(SaaS multitenant). El entrenador paga la herramienta; sus alumnos acceden gratis a
-un panel móvil donde consumen la rutina del día y marcan su progreso.
+## Evolución arquitectónica (5 fases)
 
-Alcance del MVP: autenticación con Google, constructor de rutinas sobre un catálogo
-de ejercicios, panel móvil del alumno y control de pagos de membresías con alertas
-de vencimiento.
-
-## Arquitectura (Fase 1)
-
-Monolito modular en 3 capas:
-
-- **Presentación:** React + Next.js (SSG para la landing/SEO) → Vercel _(repo aparte)_.
-- **Aplicación:** API REST **Node.js + Express + TypeScript**, organizada en módulos
-  con límites claros (Auth, Rutinas, Catálogo, Pagos). Valida JWT y aplica las reglas
-  de negocio. **Prisma ORM** como capa de abstracción de datos → Render/Railway.
-- **Datos:** **PostgreSQL** gestionado (Neon/Railway). Aislamiento multitenant: toda
-  consulta inyecta el `trainer_id` validado desde el JWT.
-
-![Arquitectura inicial](docs/arquitectura-fase1.png)
-
-> **¿Por qué un monolito modular para arrancar?** Minimiza costo y time-to-market
-> (un solo despliegue, una sola base, un solo pipeline; ~USD 7–16/mes). La modularidad
-> interna no es accidental: cada módulo está pensado como **futuro candidato a
-> microservicio** (Fase 2), reduciendo el costo de la migración.
-
-## Estructura
-
-```
-traineros/
-├─ prisma/
-│  └─ schema.prisma        # Esquema base (datasource + generator)
-├─ src/
-│  ├─ config/env.ts        # Validación de variables de entorno (Zod)
-│  ├─ middlewares/         # Middlewares transversales (ej. auth JWT)
-│  ├─ modules/             # Módulos de negocio (límites de futuros microservicios)
-│  │  ├─ auth/  rutinas/  catalogo/  pagos/
-│  ├─ routes/              # Routers transversales (ej. healthcheck)
-│  ├─ app.ts               # Construcción de la app Express
-│  └─ server.ts            # Punto de entrada
-├─ eslint.config.js
-├─ tsconfig.json
-└─ package.json
-```
-
-## Puesta en marcha
-
-```bash
-npm install
-cp .env.example .env        # completar DATABASE_URL y JWT_SECRET
-npm run dev                 # servidor en modo watch (tsx)
-```
-
-Healthcheck: `GET http://localhost:3000/health`
-
-| Script              | Descripción                          |
-| ------------------- | ------------------------------------ |
-| `npm run dev`       | Servidor en modo desarrollo (watch). |
-| `npm run build`     | Compila TypeScript a `dist/`.        |
-| `npm start`         | Ejecuta el build.                    |
-| `npm run typecheck` | Chequeo de tipos sin emitir.         |
-| `npm run lint`      | ESLint sobre `src/`.                 |
-| `npm run format`    | Prettier sobre el repo.              |
-
-## Estrategia de ramas
-
-GitHub Flow extendido. Ver **[CONTRIBUTING.md](CONTRIBUTING.md)**.
-
-- `main` → producción (protegida, solo vía PR aprobado).
-- `dev` → integración.
-- `feat/*`, `fix/*`, `chore/*` → ramas temporales por tarea.
+1. **Monolito modular en 3 capas** (MVP) — Node.js + Express + Prisma + PostgreSQL.
+2. **Microservicios**: tradicionales (REST síncrono) → modernos (event-driven con Pub/Sub).
+3. Robustez y escalabilidad (Redis, read replicas, balanceo, auto-scaling).
+4. Infraestructura, DevOps y costos (GKE, Terraform, CI/CD, 4 ambientes en GCP).
+5. Integración con IA (APIs de LLM).
 
 ## Equipo
 
-MMP-SOFTWARE — 8 integrantes. Toda contribución entra por **Pull Request** a `dev`.
+MMP-SOFTWARE — Conrado Gómez · Nicolás Zyngale · Matías Saravia · Lautaro Naglieri ·
+Pablo Czurylo · Leandro Gramajo.
+
+## Estrategia de ramas
+
+GitHub Flow extendido: `main` (producción) · `dev` (integración) · ramas temporales
+`feat/*`, `fix/*`, `chore/*`. Toda contribución entra por Pull Request a `dev`.
