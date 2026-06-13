@@ -1,0 +1,87 @@
+// Capa de Datos — esquema base (Prisma + PostgreSQL)
+// Modelo relacional: las entidades están interconectadas y todas pertenecen
+// a un Entrenador (tenant). El aislamiento multitenant se aplica en la capa
+// de aplicación inyectando el trainer_id validado desde el JWT.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Entrenador {
+  id        String      @id @default(uuid())
+  email     String      @unique
+  nombre    String
+  creadoEn  DateTime    @default(now())
+  alumnos   Alumno[]
+  rutinas   Rutina[]
+  membresias Membresia[]
+
+  @@map("entrenadores")
+}
+
+model Alumno {
+  id           String     @id @default(uuid())
+  entrenadorId String
+  entrenador   Entrenador @relation(fields: [entrenadorId], references: [id])
+  nombre       String
+  email        String
+  rutinas      Rutina[]
+  membresia    Membresia?
+
+  @@index([entrenadorId])
+  @@map("alumnos")
+}
+
+model Ejercicio {
+  id       String           @id @default(uuid())
+  nombre   String
+  grupo    String
+  videoUrl String?
+  enRutina RutinaEjercicio[]
+
+  @@map("ejercicios")
+}
+
+model Rutina {
+  id           String           @id @default(uuid())
+  entrenadorId String
+  entrenador   Entrenador       @relation(fields: [entrenadorId], references: [id])
+  alumnoId     String
+  alumno       Alumno           @relation(fields: [alumnoId], references: [id])
+  nombre       String
+  creadaEn     DateTime         @default(now())
+  ejercicios   RutinaEjercicio[]
+
+  @@index([entrenadorId])
+  @@map("rutinas")
+}
+
+model RutinaEjercicio {
+  id          String    @id @default(uuid())
+  rutinaId    String
+  rutina      Rutina    @relation(fields: [rutinaId], references: [id])
+  ejercicioId String
+  ejercicio   Ejercicio @relation(fields: [ejercicioId], references: [id])
+  series      Int
+  repeticiones Int
+
+  @@map("rutina_ejercicios")
+}
+
+model Membresia {
+  id           String     @id @default(uuid())
+  entrenadorId String
+  entrenador   Entrenador @relation(fields: [entrenadorId], references: [id])
+  alumnoId     String     @unique
+  alumno       Alumno     @relation(fields: [alumnoId], references: [id])
+  estado       String     @default("activa")
+  venceEl      DateTime
+
+  @@index([entrenadorId])
+  @@map("membresias")
+}
