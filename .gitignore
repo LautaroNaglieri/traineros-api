@@ -10,3 +10,6 @@ Thumbs.db
 # Python (generadores)
 __pycache__/
 *.pyc
+
+# Archivos temporales de Office
+~$*

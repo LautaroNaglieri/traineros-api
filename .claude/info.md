@@ -44,13 +44,18 @@ Repo del código: https://github.com/LautaroNaglieri/traineros-api
    - `fase2-microservicios/` → monorepo (gateway + 5 servicios + shared-contracts/events
      + docker-compose con emulador Pub/Sub). Esqueleto event-driven.
 
-### Decisiones / notas técnicas
-- El `.pptx` lleva los diagramas como **imágenes** (no formas nativas) porque el XML
-  manual de formas/flechas que probé generaba un archivo que PowerPoint no abría. Las
-  imágenes PIL son confiables y se ven mejor. Las slides de texto sí son formas nativas
-  editables. El generador está en `Presentacion/generador/` (build_diagrams.py + build_pptx.py).
-- Para regenerar/verificar el pptx: `export_png.py` usa PowerPoint vía COM, pero **debe
-  abrir desde C:\Temp** (PowerPoint no abre rutas del Desktop sincronizado con OneDrive).
+### Decisiones / notas técnicas (estado FINAL)
+- **Diagramas**: son archivos **.drawio reales** (editables) en `Presentacion/diagramas/drawio/`,
+  generados por `Presentacion/generador/build_drawio.py` y renderizados a PNG con el **draw.io
+  desktop** (`render_drawio.sh`). Estilo elegido por Conrado: **draw.io clásico** (rectángulos
+  rectos, bordes/flechas negras, rellenos planos azul/dorado/verde, flujo vertical). Tomó como
+  referencia su captura. (Iteraciones previas: HTML→PIL→draw.io; quedó draw.io.)
+- **Presentación**: `build_pptx.py` arma el `.pptx`. Las slides de texto son formas nativas
+  editables; las de diagrama embeben los PNG ajustados sin distorsión. **Estilo corporativo
+  tipo "Naturgy en un Scan"**: azul #1F4E79 + naranja #E8741E + gris, barra naranja al pie.
+  (Referencia: `UNSTA/innovation-challenge/docs/Presentacion_Semifinal_Naturgy_en_un_Scan.pptx`.)
+- Para verificar el pptx: `export_png.py` usa PowerPoint vía COM, pero **abre desde C:\Temp**
+  (PowerPoint no abre rutas del Desktop sincronizado con OneDrive).
 - Cuando se use el navegador (Claude-in-Chrome) usar **Brave**, no Chrome.
 
 ### Diagnóstico del repo GitHub (revisado con Brave el 13/06)
