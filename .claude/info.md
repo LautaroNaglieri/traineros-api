@@ -76,9 +76,30 @@ Repo `LautaroNaglieri/traineros-api`, rama `main`. Estado real:
 6. Sacar **capturas de los commits del esqueleto** (Fase 1 y Fase 2) para el informe.
    ⚠ Acción destructiva sobre repo de un compañero: confirmar con Conrado antes de pushear.
 
+### Push a GitHub — HECHO (13/06)
+- `Final/` ahora es repo git conectado a `origin` (LautaroNaglieri/traineros-api).
+- Se hicieron 5 commits en español (sin IA, sin emojis) sobre la historia existente y se
+  pusheó a **`main`** (no estaba protegida; push directo OK): `350e02a..61cb0ff`.
+  - `chore: reorganiza el repositorio como workspace del TFI`
+  - `feat: esqueleto del monolito modular en capas (Fase 1)`
+  - `feat: esqueleto del monorepo de microservicios (Fase 2)`
+  - `docs: presentacion ejecutiva y diagramas de las fases 1 y 2`
+  - `docs: material de referencia y resumen de la consigna`
+- `main` quedó con: .claude, Material, Presentacion, Codigo (traineros-api + fase2-microservicios),
+  Informe, Articulo, README.md. El layout viejo (src/ por features en la raíz) fue reemplazado.
+- Commits de esqueleto previos (express, prisma, eslint, healthcheck) se conservan en la historia.
+- Config commit: user "Conrado Gómez" <conradogomez556@gmail.com>.
+
+### Diagramas: estilo draw.io (13/06)
+- Se rehicieron los 4 diagramas en **estilo draw.io/formal** (paleta oficial de draw.io,
+  íconos de servicios, conectores ortogonales, clusters). Generador: `build_diagrams.py`.
+
 ### PENDIENTE (próximas sesiones)
-- [x] **Revisar el repo GitHub** traineros-api (hecho — ver diagnóstico arriba).
-- [ ] **Subir todo a GitHub** (reemplazando lo actual) según el plan de arriba.
+- [x] Revisar el repo GitHub (diagnóstico arriba).
+- [x] Subir todo a GitHub reemplazando lo anterior (en `main`).
+- [ ] **Sincronizar la rama `dev`**: quedó con el layout viejo. Si el equipo branchea desde
+      `dev`, vería la estructura vieja. Decidir con el equipo si se actualiza `dev` al nuevo workspace.
+- [ ] **Capturas de los commits del esqueleto** (Fase 1 y Fase 2) para el informe.
 - [ ] **Subir todo a GitHub** (reemplazando lo actual). Commits en español, sin mención a
       herramientas de IA, sin emojis. Sacar **capturas de los commits del esqueleto**
       (Fase 1 y Fase 2) que pide la consigna.
