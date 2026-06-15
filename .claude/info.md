@@ -4,10 +4,66 @@ Registro de todo lo que se va haciendo, con fecha y hora, para tener siempre el
 contexto completo del proyecto. Lo más nuevo arriba.
 
 Equipo (6): Conrado Gómez · Nicolás Zyngale · Matías Saravia · Lautaro Naglieri ·
-Pablo Czurylo · Leandro Gramajo · Empresa ficticia: **MMP-SOFTWARE**.
+Pablo Czurylo · Leandro Gramajo · **Grupo VOX**. (La empresa/producto ficticio del
+caso de negocio es **TrainerOS**; se quitó toda referencia a la marca "MMP-SOFTWARE".)
 
-Fecha límite de entrega: **19/06/2026**. Mail del profe: dl.sotol@gmail.com.
+Fecha límite de entrega: **19/06/2026**. Mail del profe: **Dr.zottola@gmail.com**
+(antes figuraba "dl.sotol@gmail.com" por una mala transcripción del audio).
 Repo del código: https://github.com/LautaroNaglieri/traineros-api
+
+---
+
+## 2026-06-15 — Sesión 2: borrador del informe pulido, diagramas completos e informe en Google Docs
+
+### Qué se hizo
+1. **Correcciones al informe maestro** (`Material/TFI_TrainerOS.docx`):
+   - **Autoría** → "Autores — Grupo VOX" con los 6 integrantes (antes decía "Lautaro Naglieri").
+     Corregidos también los metadatos del archivo (autor/título), que estaban en "Un-named".
+   - **Eliminada toda mención a "MMP-SOFTWARE"** (cuerpo + tablas). La empresa ficticia pasa a
+     llamarse simplemente **TrainerOS**; se conservó el argumento de "la empresa crece a 3 equipos"
+     (justifica microservicios — ley de Conway, es lo que pide la consigna).
+   - Arreglos detectados por un **agente que simuló ser el profesor** (revisión crítica del borrador):
+     costos no-prod unificados a **$150** (total ~$670; antes "$120–150"); celda de branching con `|`
+     literal → `·`; "6 tópicos" → **"6 tópicos (4 de negocio + 2 de IA)"**; índice vacío → índice manual.
+2. **Diagramas draw.io** (`Presentacion/diagramas/drawio/` + generador `build_drawio.py`):
+   - **fase2a (tradicional) rehecho completo**: 5 servicios con **BD propia etiquetada** (incl. la de
+     Notificaciones: log de envíos · plantillas · prefs · idempotencia) y las **llamadas REST síncronas**
+     dibujadas entre cajas adyacentes (Notificaciones reubicado al centro para evitar cruces). Antes el
+     diagrama no mostraba ninguna llamada entre servicios, contradiciendo su nota de "acoplamiento temporal".
+   - **fase2b (eventos) corregido**: el API Gateway estaba **desconectado** (no llegaba a los servicios);
+     ahora rutea los comandos a Rutinas y Pagos.
+   - **Creados fase3 (robustez/escalabilidad) y fase5 (integración IA, flujo asíncrono)**. Faltaban.
+   - Render a PNG con **draw.io desktop** (escala 2).
+3. **Figuras del docx**: el documento **ya tenía 5 figuras embebidas viejas/desprolijas**; se
+   reemplazaron las **5** (Figuras 1–5) por las versiones limpias de draw.io, manteniendo ancho 620 px.
+4. **Capturas de commits del esqueleto** (lo que pide la consigna) insertadas en el docx con epígrafe + link:
+   - **Fase 1**: commit `2e1baa5` "esqueleto del monolito modular en capas" (detalle + árbol de las 3 capas
+     presentation/application/domain/infrastructure). Imágenes en `Material/commits-fase-1/`.
+   - **Fase 2**: commit `c743488` "esqueleto del monorepo de microservicios" (gateway + 5 servicios +
+     shared-contracts + docker-compose con Pub/Sub). Imágenes en `Material/commits-fase-2/`.
+   - Son las **2 únicas** capturas de commits que exige la consigna (Fases 3/4/5 son conceptuales).
+5. **Presentación** regenerada (`build_pptx.py`): portada "Grupo VOX" + toma los PNG corregidos.
+   ⚠ Sigue cubriendo **solo Fases 1–2** (9 slides). Pendiente completar a 5 fases.
+6. **README + esta bitácora**: "MMP-SOFTWARE" → **Grupo VOX**.
+7. **Informe formal en Google Docs**: se subió el `.docx` a Drive y se **convirtió** a Google Doc nativo
+   **"TFI_TrainerOS"** (comentable por el profe, exportable a PDF). URL:
+   https://docs.google.com/document/d/1rOQxEYt8FT7fUDVfMSMYxHFX2v_mYKIEvHSRzYZaYX8/edit
+   Conversión verificada slide/figura por figura: las 5 figuras + 2 capturas + tablas quedaron bien.
+   PDF exportado a `Informe/TFI_TrainerOS.pdf`.
+
+### Notas / decisiones
+- El intento de armar el Google Doc **tipeando a mano** (Markdown auto-detect funciona) se descartó:
+  insertar 7 imágenes a mano es frágil. La vía confiable fue **subir el .docx y convertirlo**.
+- La **subida de archivos al navegador no se puede automatizar** (diálogo nativo / input en iframe);
+  ese paso lo hace Conrado a mano.
+- **Compartir el Google Doc** con el profe (rol Comentador) lo hace Conrado (no se modifican permisos por él).
+
+### PENDIENTE
+- [ ] Compartir el Google Doc con el profe como **Comentador** (Conrado).
+- [ ] **Completar la presentación** a las 5 fases (hoy 1–2; ya existen los diagramas de 3 y 5).
+      Debe entrar en **10 min** (consigna): recortar texto y apuntar a pocas slides.
+- [ ] **Artículo técnico** (Medium/LinkedIn) — sin empezar.
+- [ ] Grabar el **video** (12–20 min, todos hablan).
 
 ---
 
@@ -142,8 +198,9 @@ Hoy se armaron las slides 1-9 (cubren Fases 1 y 2). Faltan 10-12 (Fases 3-5).
 | 11 | Infra, DevOps, ambientes y costos | 4 | Pablo Czurylo | 1:45 |
 | 12 | Integración con IA + cierre | 5 | Leandro Gramajo | 1:30 |
 
-Total aprox: **~14:45** (margen para ajustar al rango 12-15 min). Cada integrante
+Total aprox: **~14:45** — pero el objetivo es **10 min** (ver nota), hay que recortar. Cada integrante
 expone su bloque y describe lo que hizo (el profe rechaza el "leer títulos").
 
-> Nota: la consigna escrita dice 10 min, pero el profe en el audio aclaró 12-20 min
-> para grupos numerosos (somos 6). Apuntamos a 12-15.
+> Nota (Conrado, 15/06): la presentación es de **10 min** (consigna). El deck armado
+> hoy apunta a ~14 min, así que al completarlo a las 5 fases hay que recortar para entrar
+> en 10 min (menos texto por slide, transiciones rápidas).

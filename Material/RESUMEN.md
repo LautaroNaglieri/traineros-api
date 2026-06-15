@@ -51,4 +51,4 @@ negocio, costo y rendimiento). Se evalúa el **criterio de diseñador**, no el c
 - **Video** (entrega no presencial): **12 a 20 min** para grupo numeroso. **Todos hablan**
   y describen lo que hicieron (no leer títulos, no leer de corrido). Si no, manda a rendir.
 - **Fecha límite: 19/06/2026.** Se puede ir compartiendo el informe por Google Docs para
-  correcciones. Mail del profe: dl.sotol@gmail.com.
+  correcciones. Mail del profe: Dr.zottola@gmail.com.

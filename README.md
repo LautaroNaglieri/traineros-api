@@ -1,6 +1,6 @@
 # TrainerOS — Trabajo Final Integrador (Desarrollo de Aplicaciones Web)
 
-Workspace del TFI del equipo **MMP-SOFTWARE** (6 integrantes): diseño de la evolución
+Workspace del TFI del **Grupo VOX** (6 integrantes): diseño de la evolución
 arquitectónica de **TrainerOS**, una plataforma SaaS B2B2C de gestión para entrenadores
 personales.
 
@@ -30,7 +30,7 @@ decisión arquitectónica está justificada por negocio, costo y rendimiento.
 
 ## Equipo
 
-MMP-SOFTWARE — Conrado Gómez · Nicolás Zyngale · Matías Saravia · Lautaro Naglieri ·
+Grupo VOX — Conrado Gómez · Nicolás Zyngale · Matías Saravia · Lautaro Naglieri ·
 Pablo Czurylo · Leandro Gramajo.
 
 ## Estrategia de ramas
