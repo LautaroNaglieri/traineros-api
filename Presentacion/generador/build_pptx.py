@@ -84,7 +84,7 @@ txt(s,0.8,4.28,11.73,0.45,[P([("Plataforma SaaS de gestión para entrenadores pe
 rect(s,0,4.95,SW,0.045,fill=ORANGE)
 txt(s,0.8,5.55,11.73,0.4,[P([("Fase 1: Monolito modular en 3 capas      →      Fase 2: Microservicios tradicionales y modernos (event-driven)",13,False,"AEBFCE")],align=PP_ALIGN.CENTER)],align=PP_ALIGN.CENTER)
 txt(s,0.8,6.45,11.73,0.6,[
-    P([("TFI · Desarrollo de Aplicaciones Web · Equipo MMP-SOFTWARE",12.5,True,WHITE)],align=PP_ALIGN.CENTER,space_after=4),
+    P([("TFI · Desarrollo de Aplicaciones Web · Grupo VOX",12.5,True,WHITE)],align=PP_ALIGN.CENTER,space_after=4),
     P([(INTEG,10.5,False,"AEBFCE")],align=PP_ALIGN.CENTER),
 ])
 
