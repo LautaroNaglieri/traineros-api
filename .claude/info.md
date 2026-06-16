@@ -8,7 +8,6 @@ Pablo Czurylo · Leandro Gramajo · **Grupo VOX**. (La empresa/producto ficticio
 caso de negocio es **TrainerOS**; se quitó toda referencia a la marca "MMP-SOFTWARE".)
 
 Fecha límite de entrega: **19/06/2026**. Mail del profe: **Dr.zottola@gmail.com**
-(antes figuraba "dl.sotol@gmail.com" por una mala transcripción del audio).
 Repo del código: https://github.com/LautaroNaglieri/traineros-api
 
 ---
