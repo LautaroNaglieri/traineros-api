@@ -234,5 +234,34 @@ def fase5():
     d.node(950, 560, 530, 70, "<b>Costos y datos:</b> presupuesto de tokens por tenant · caché de respuestas para prompts repetidos · anonimización de los datos del alumno antes de salir a la API externa.", box(CREAM, "align=left;spacingLeft=12;verticalAlign=middle;"))
     save("fase5_integracion_ia.drawio", d.xml())
 
+# ===================================================== FASE 5 · OPCION B (RAG)
+def fase5b():
+    d=Dio(); header(d, "Fase 5 · Opción B — RAG (Retrieval-Augmented Generation)")
+    d.node(70, 96, 360, 22, "INGESTA (offline · indexación)", "text;html=1;align=left;fontSize=13;fontStyle=1;fontColor=#666666;")
+    d.node(70, 372, 360, 22, "CONSULTA (online · en cada pedido)", "text;html=1;align=left;fontSize=13;fontStyle=1;fontColor=#666666;")
+    vector = d.node(720, 246, 280, 96, "Base vectorial\nPinecone / Milvus / Chroma", db(GREEN))
+    # --- ingesta ---
+    fu = d.node(70, 126, 250, 86, "Fuentes\ncatálogo · fichas técnicas\ndocumentos del entrenador", box(BLUE))
+    ch = d.node(360, 140, 150, 60, "Chunking", box(GOLD))
+    em = d.node(540, 140, 160, 60, "Embeddings", box(GOLD))
+    d.edge(fu, ch, exit=(1,0.5), entry=(0,0.5))
+    d.edge(ch, em, exit=(1,0.5), entry=(0,0.5))
+    d.edge(em, vector, "indexa", exit=(1,0.5), entry=(0.3,0))
+    # --- consulta ---
+    q  = d.node(70, 404, 250, 72, "Consulta del entrenador\n(ej. rutina con lesión)", box(BLUE))
+    qe = d.node(360, 408, 150, 62, "Embedding\nde la consulta", box(GOLD))
+    rt = d.node(540, 408, 160, 62, "Retrieval\ntop-k por similitud", box(GOLD))
+    pr = d.node(760, 408, 190, 62, "Prompt aumentado\n(consulta + contexto)", box(GOLDST, "fontStyle=1;"))
+    llm= d.node(1010, 398, 250, 82, "API LLM\nAnthropic Claude / OpenAI\nfuera de la arquitectura", box(WHITE, "dashed=1;strokeWidth=2;fontStyle=2;"))
+    rs = d.node(1300, 408, 220, 62, "Respuesta\n(borrador a revisar)", box(BLUE))
+    d.edge(q, qe, exit=(1,0.5), entry=(0,0.5))
+    d.edge(qe, rt, exit=(1,0.5), entry=(0,0.5))
+    d.edge(vector, rt, "top-k chunks", extra="dashed=1;strokeColor=#666666;fontColor=#666666;", exit=(0.3,1), entry=(0.5,0))
+    d.edge(rt, pr, exit=(1,0.5), entry=(0,0.5))
+    d.edge(pr, llm, exit=(1,0.5), entry=(0,0.5))
+    d.edge(llm, rs, exit=(1,0.5), entry=(0,0.5))
+    d.node(70, 540, 1450, 78, "<b>Por qué hoy va la Opción A y no B.</b>  Los casos de uso operan sobre datos estructurados (historial, catálogo, membresías) que caben en el prompt; RAG se justifica cuando el catálogo crezca a miles de fichas extensas y documentos de los entrenadores. RAG reutiliza el MISMO backbone asíncrono (workers y colas de la Opción A): solo agrega el pipeline de ingesta y una etapa de retrieval previa al armado del prompt.", box(CREAM, "align=left;spacingLeft=12;verticalAlign=middle;"))
+    save("fase5b_rag.drawio", d.xml())
+
 if __name__=="__main__":
-    fase1(); fase2a(); fase2b(); fase3(); fase5(); evolucion(); print("Listo.")
+    fase1(); fase2a(); fase2b(); fase3(); fase5(); fase5b(); evolucion(); print("Listo.")
