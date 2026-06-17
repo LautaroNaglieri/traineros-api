@@ -86,25 +86,28 @@ def fase1():
 # ===================================================== FASE 2A
 def fase2a():
     d=Dio(); header(d, "Fase 2 · Paso A — Microservicios Tradicionales (REST síncrono)")
-    cli = d.node(720, 96, 240, 56, "Clientes\nWeb · Móvil · B2B", box(BLUE))
-    gw  = d.node(690, 182, 300, 58, "API Gateway\nruteo · rate limiting · JWT", box(BLUE, "fontStyle=1;"))
-    d.edge(cli, gw, exit=(0.5,1), entry=(0.5,0))
+    # --- cadena de entrada: clientes -> balanceador -> gateway ---
+    cli = d.node(640, 92, 240, 50, "Clientes\nWeb · Móvil · B2B", box(BLUE))
+    lb  = d.node(625, 166, 270, 52, "Balanceador de carga\nHTTPS · termina TLS · multi-zona", box(BLUE))
+    gw  = d.node(610, 242, 300, 58, "API Gateway\nruteo · rate limiting · JWT", box(BLUE, "fontStyle=1;"))
+    d.edge(cli, lb, exit=(0.5,1), entry=(0.5,0))
+    d.edge(lb, gw, exit=(0.5,1), entry=(0.5,0))
 
-    cont = d.node(60, 300, 1560, 300, "MICROSERVICIOS", container(CREAM))
+    cont = d.node(60, 348, 1460, 300, "MICROSERVICIOS", container(CREAM))
     # Orden pensado para que las llamadas REST queden entre cajas ADYACENTES (sin cruces):
     # Notificaciones queda al centro-derecha, llamado por Rutinas (izq) y Pagos (der).
     svcs = [
         ("MS Auth\n& Tenants",                       "BD Auth\nusuarios · tenants",                          100, 100),
-        ("MS Catálogo\nlecturas",                    "BD Catálogo\nejercicios",                              410, 100),
-        ("MS Rutinas\nnúcleo",                       "BD Rutinas\nrutinas · asignaciones",                   720, 100),
-        ("MS Notificaciones\npush · email · WhatsApp","BD Notif.\nlog envíos · plantillas\nprefs · idempotencia", 1030, 150),
-        ("MS Pagos\nmembresías",                     "BD Pagos\nmembresías · facturas",                     1340, 100),
+        ("MS Catálogo\nlecturas",                    "BD Catálogo\nejercicios",                              385, 100),
+        ("MS Rutinas\nnúcleo",                       "BD Rutinas\nrutinas · asignaciones",                   670, 100),
+        ("MS Notificaciones\npush · email · WhatsApp","BD Notif.\nlog envíos · plantillas\nprefs · idempotencia", 955, 150),
+        ("MS Pagos\nmembresías",                     "BD Pagos\nmembresías · facturas",                     1240, 100),
     ]
     ids={}
     for i,(lab,dblab,x,dbw) in enumerate(svcs):
-        s=d.node(x, 356, 240, 66, lab, box(GOLD))
+        s=d.node(x, 404, 240, 66, lab, box(GOLD))
         cx=x+120
-        dbi=d.node(cx-dbw//2, 504, dbw, 80, dblab, db(GREEN))
+        dbi=d.node(cx-dbw//2, 548, dbw, 80, dblab, db(GREEN))
         d.edge(s, dbi, exit=(0.5,1), entry=(0.5,0))
         ids[i]=s
     # Gateway -> servicios client-facing (Notificaciones NO es client-facing)
@@ -115,9 +118,19 @@ def fase2a():
     d.edge(ids[2], ids[1], "REST", extra=red, exit=(0,0.5), entry=(1,0.5))   # Rutinas -> Catálogo (valida ejercicios)
     d.edge(ids[2], ids[3], "REST", extra=red, exit=(1,0.5), entry=(0,0.5))   # Rutinas -> Notificaciones (avisa al alumno)
     d.edge(ids[4], ids[3], "REST", extra=red, exit=(0,0.5), entry=(1,0.5))   # Pagos   -> Notificaciones (aviso de pago)
-    d.node(100, 612, 900, 22, "Flechas rojas punteadas = llamadas REST síncronas entre servicios (acoplamiento).", "text;html=1;align=left;fontSize=12;fontColor=#CC0000;")
-    d.node(100, 634, 900, 22, "Patrón Database per Service · cada microservicio es dueño de su propia base.", "text;html=1;align=left;fontSize=12;fontColor=#444444;")
-    d.node(60, 668, 1560, 80, "<b>Límite — acoplamiento temporal.</b>  Las llamadas entre servicios son síncronas: si Notificaciones está caído, asignar una rutina (Rutinas → Notificaciones) falla o se demora, aunque el alumno no necesite el aviso al instante. Las cadenas REST suman latencias y multiplican los puntos de fallo: la disponibilidad compuesta es el producto de las individuales.", box(REDN, "align=left;spacingLeft=12;verticalAlign=middle;"))
+
+    # --- componentes transversales (lo que el diagrama tenía que mostrar más allá del gateway) ---
+    infra = d.node(1560, 348, 360, 300, "PLATAFORMA — COMPONENTES TRANSVERSALES\n(atienden a TODOS los servicios)", container(BLUE, "verticalAlign=top;spacingTop=8;fontSize=12;"))
+    reg = d.node(1582, 402, 316, 60, "Service Discovery / Registry\nConsul · Eureka — localiza instancias", box(WHITE))
+    cfg = d.node(1582, 476, 316, 60, "Config Server\nconfiguración centralizada por ambiente", box(WHITE))
+    obs = d.node(1582, 550, 316, 78, "Observabilidad\nlogging centralizado · métricas\ntrazas distribuidas (correlation-id)", box(WHITE))
+    blue="dashed=1;strokeColor=#1F4E79;fontColor=#1F4E79;dashPattern=6 4;"
+    d.edge(gw, reg, "descubre instancias", extra=blue, exit=(1,0.3), entry=(0,0))
+    d.edge(cont, infra, "se registran · leen config · emiten métricas y trazas", extra=blue, exit=(1,0.5), entry=(0,0.5))
+
+    d.node(100, 660, 900, 22, "Flechas rojas punteadas = llamadas REST síncronas entre servicios (acoplamiento).", "text;html=1;align=left;fontSize=12;fontColor=#CC0000;")
+    d.node(100, 682, 900, 22, "Patrón Database per Service · cada microservicio es dueño de su propia base.", "text;html=1;align=left;fontSize=12;fontColor=#444444;")
+    d.node(60, 716, 1860, 80, "<b>Límite — acoplamiento temporal.</b>  Las llamadas entre servicios son síncronas: si Notificaciones está caído, asignar una rutina (Rutinas → Notificaciones) falla o se demora, aunque el alumno no necesite el aviso al instante. Las cadenas REST suman latencias y multiplican los puntos de fallo: la disponibilidad compuesta es el producto de las individuales.", box(REDN, "align=left;spacingLeft=12;verticalAlign=middle;"))
     save("fase2a_microservicios_tradicionales.drawio", d.xml())
 
 # ===================================================== FASE 2B
