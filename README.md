@@ -14,7 +14,7 @@ decisión arquitectónica está justificada por negocio, costo y rendimiento.
 | Carpeta | Contenido |
 |---------|-----------|
 | [`Material/`](./Material) | Documentación fuente: consigna, documento maestro del proyecto y resumen. |
-| [`Presentacion/`](./Presentacion) | Presentación ejecutiva (`.pptx`) y diagramas de arquitectura de las Fases 1 y 2. |
+| [`Presentacion/`](./Presentacion) | Presentación ejecutiva (`.pptx`) de las 5 fases (10 min) y diagramas de arquitectura. |
 | [`Codigo/`](./Codigo) | Esqueletos de código (diseño): monolito modular **en capas** (Fase 1) y microservicios (Fase 2). |
 | [`Informe/`](./Informe) | Informe final (PDF) — en preparación. |
 | [`Articulo/`](./Articulo) | Artículo técnico de divulgación — en preparación. |

@@ -12,6 +12,45 @@ Repo del código: https://github.com/LautaroNaglieri/traineros-api
 
 ---
 
+## 2026-06-16 — Sesión 3: correcciones del profesor + presentación completa (5 fases)
+
+### Comentarios del profesor (Rodrigo Zottola) en el Google Doc
+El informe se compartió en un Google Doc NUEVO (el de la sesión 2 no tenía comentarios):
+https://docs.google.com/document/d/1W1xWw5OVDlpQfHZl6tADK7AxZrELcQLCWlwYNKM2Vu4/edit
+Dos comentarios:
+1. **General:** "Revisado, por favor subir link de presentación".
+2. **Sobre la Figura 2 (Paso A, microservicios tradicionales):** "¿Qué otros componentes
+   deberías agregar acá más allá del gateway, los microservicios?".
+
+### Qué se hizo
+1. **Figura 2 / diagrama fase2a rediseñado** (`build_drawio.py` → `fase2a()`): se agregaron los
+   **componentes transversales** que faltaban en una arquitectura de microservicios síncrona:
+   **Balanceador de carga** (Clientes → LB → API Gateway), **Service Discovery / Registry**
+   (Consul/Eureka, "descubre instancias"), **Config Server** y **Observabilidad** (logging
+   centralizado · métricas · trazas con correlation-id), en un bloque "PLATAFORMA — COMPONENTES
+   TRANSVERSALES" a la derecha. Render a PNG escala 2 con draw.io desktop.
+2. **Informe (`Material/TFI_TrainerOS.docx`)**: (a) se reemplazó la imagen de la Figura 2
+   (`word/media/image2.png`) por el diagrama nuevo, recalculando el alto para no distorsionar;
+   (b) se insertó en la sección 2.2 un párrafo **"Componentes transversales de la plataforma"**
+   que explica por escrito los 4 componentes (responde el comentario 2). PDF regenerado en
+   `Informe/TFI_TrainerOS.pdf` con Word COM (desde C:\Temp por OneDrive).
+3. **Presentación completada a las 5 fases** (`build_pptx.py` → `TrainerOS_TFI_Presentacion.pptx`,
+   **11 slides**, pensada para **10:00**). Se borró el `TrainerOS_TFI_Fase1-2.pptx` viejo.
+   **Reparto (6 personas):** Conrado = intro (problema+negocio) + cierre (2:30) · Nicolás = Fase 1
+   (1:30) · Matías = Fase 2 A+B (1:30) · Lautaro = Fase 3 (1:30) · Pablo = Fase 4 (1:30) ·
+   Leandro = Fase 5 (1:30). Cada slide lleva en el pie "X / 11 · Expone: <nombre> · <tiempo>".
+   Slides de Fase 3 y 5 usan los diagramas; Fase 4 es slide de contenido (4 cuadrantes + costos);
+   slide 11 es un resumen de las 5 fases. Verificado exportando a PNG con PowerPoint COM.
+
+### PENDIENTE (acciones manuales de Conrado — no se automatizan)
+- [ ] **Re-subir el `.docx` corregido a Google Drive y reconvertir** el Google Doc (la subida de
+      archivos al navegador no se puede automatizar) para que el profe vea la Figura 2 corregida.
+- [ ] **Responder los 2 comentarios** del profe en el Doc (resolver) y **compartir/subir el link
+      de la presentación** (comentario 1). Compartir permisos lo hace Conrado.
+- [ ] Artículo técnico (Medium) y grabar el video — siguen pendientes.
+
+---
+
 ## 2026-06-15 — Sesión 2: borrador del informe pulido, diagramas completos e informe en Google Docs
 
 ### Qué se hizo
